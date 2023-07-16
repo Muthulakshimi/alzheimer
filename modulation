@@ -1,0 +1,17 @@
+import sounddevice as sd
+import numpy as np
+
+# set the sample rate and duration of the recording
+sample_rate = 44100
+duration = 5  # in seconds
+
+# record audio from the microphone
+print("Recording...")
+audio = sd.rec(int(sample_rate * duration), samplerate=sample_rate, channels=1)
+sd.wait()  # wait for the recording to finish
+
+# calculate the RMS amplitude of the recorded audio
+rms = np.sqrt(np.mean(np.square(audio)))
+
+# print the RMS amplitude to the console
+print("RMS amplitude:", rms)
