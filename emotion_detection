@@ -1,0 +1,78 @@
+import requests
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+def get_sentiment(text):
+    """
+    Gets the sentiment of the given text.
+
+    Args:
+        text: The text to analyze.
+
+    Returns:
+        The sentiment of the text, as a string.
+    """
+
+    sid = SentimentIntensityAnalyzer()
+    sentiment = sid.polarity_scores(text)
+
+    if sentiment["compound"] >= 0.5:
+        return "Positive"
+    elif sentiment["compound"] <= -0.5:
+        return "Negative"
+    else:
+        return "Neutral"
+
+def get_emotion(sentiment):
+    """
+    Gets the emotion of the given sentiment.
+
+    Args:
+        sentiment: The sentiment to analyze.
+
+    Returns:
+        The emotion of the sentiment, as a string.
+    """
+
+    emotions = {
+        "Positive": "Happy",
+        "Negative": "Sad",
+        "Neutral": "Neutral"
+    }
+
+    return emotions[sentiment]
+
+def get_summary(text):
+    """
+    Gets the summary of the given text.
+
+    Args:
+        text: The text to summarize.
+
+    Returns:
+        The summary of the text, as a string.
+    """
+
+    summary = nltk.sent_tokenize(text)
+    summary = [sent for sent in summary if len(sent.split()) <= 15]
+    summary = " ".join(summary)
+
+    return summary
+
+def main():
+    """
+    Gets the sentiment, emotion, and summary of the text inputted by the user.
+    """
+
+    text = input("Enter the text to analyze: ")
+
+    sentiment = get_sentiment(text)
+    emotion = get_emotion(sentiment)
+    summary = get_summary(text)
+
+    print("Sentiment:", sentiment)
+    print("Emotion:", emotion)
+    print("Summary:", summary)
+
+if __name__ == "__main__":
+    main()
