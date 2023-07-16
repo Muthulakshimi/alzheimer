@@ -1,0 +1,38 @@
+import speech_recognition as sr
+from datetime import datetime
+
+# Set up the recognizer
+r = sr.Recognizer()
+
+# Record audio from the microphone
+with sr.Microphone() as source:
+    print("Speak now...")
+    audio = r.listen(source)
+
+# Perform speech recognition
+try:
+    start_time = datetime.now()  # Record the start time of speech recognition
+    text = r.recognize_google(audio)  # Use Google Speech Recognition engine
+    end_time = datetime.now()  # Record the end time of speech recognition
+
+    print("Transcription:", text)
+
+    # Print the recorded words
+    recorded_words = r.recognize_google(audio, show_all=True)
+    print("Recorded words:")
+    for result in recorded_words["alternative"]:
+    # process each alternative result
+        print("- ", result["transcript"])
+
+    # Analyze the number of words
+    word_count = len(text.split())
+    print("Number of words:", word_count)
+
+    # Calculate the duration of speech
+    duration = end_time - start_time
+    print("Speech duration:", duration)
+
+except sr.UnknownValueError:
+    print("Speech recognition could not understand audio")
+except sr.RequestError as e:
+    print("Could not request results from Google Speech Recognition service; {0}".format(e))
